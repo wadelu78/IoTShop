@@ -6,11 +6,13 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProducts } from '../actions/productActions'
 
-const Homescreen = () => {
+const HomeScreen = () => {
   const dispatch = useDispatch()
 
   const productList = useSelector((state) => state.productList)
   const { loading, error, products } = productList
+
+  console.log(loading, error, products)
 
   useEffect(() => {
     dispatch(listProducts())
@@ -36,4 +38,4 @@ const Homescreen = () => {
   )
 }
 
-export default Homescreen
+export default HomeScreen
