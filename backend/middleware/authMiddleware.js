@@ -2,6 +2,7 @@
 
 import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
+import User from '../models/userModel.js'
 
 const protect = asyncHandler(async (req, res, next) => {
   const authInfo = req.headers.authorization
@@ -25,4 +26,18 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 })
 
-export { protect }
+const admin = asyncHandler(async (req, res, next) => {
+  if (req.decodedId) {
+    const { isAdmin } = await User.findById(req.decodedId)
+    if (isAdmin) {
+      next()
+    } else {
+      throw new Error('Not authorized, the user is not admin')
+    }
+  } else {
+    res.status(401)
+    throw new Error('Not authorized, no token found')
+  }
+})
+
+export { protect, admin }
