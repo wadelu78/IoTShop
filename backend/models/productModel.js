@@ -40,6 +40,15 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    alternativeImages: {
+      type: [
+        {
+          url: { type: String, required: true },
+        },
+      ],
+      default: [],
+      validate: [arrayLimit, 'alternative images limit of 5'],
+    },
     brand: {
       type: String,
       required: true,
@@ -78,6 +87,10 @@ const productSchema = mongoose.Schema(
     timestamps: true,
   }
 )
+
+function arrayLimit(val) {
+  return val.length <= 5
+}
 
 const Product = mongoose.model('Product', productSchema)
 

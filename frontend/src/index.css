@@ -45,3 +45,22 @@ h1 {
 .carousel a {
   margin: 0 auto;
 }
+
+.alternative-image-container {
+  height: 110px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  margin-top: 5px;
+}
+
+.alternative-image {
+  width: 120px;
+  height: 90px;
+}
+.alternative-image:hover {
+  cursor: pointer;
+}
+.alternative-image:not(:last-child) {
+  margin-right: 5px;
+}

@@ -16,6 +16,8 @@ const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+  const [mainPic, setMainPic] = useState('')
+
   const dispatch = useDispatch()
 
   const productDetails = useSelector((state) => state.productDetails)
@@ -40,6 +42,10 @@ const ProductScreen = ({ history, match }) => {
     dispatch(listProductDetails(match.params.id))
   }, [dispatch, match, successProductReview])
 
+  useEffect(() => {
+    setMainPic(product.image)
+  }, [product.image])
+
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
@@ -52,6 +58,10 @@ const ProductScreen = ({ history, match }) => {
         comment,
       })
     )
+  }
+
+  const setMainPicHandler = (e) => {
+    setMainPic(e.target.src)
   }
 
   return (
@@ -68,7 +78,25 @@ const ProductScreen = ({ history, match }) => {
           <Meta title={product.name} />
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              <Image src={mainPic} alt={product.name} fluid />
+              {product.alternativeImages &&
+                product.alternativeImages.length > 0 && (
+                  <div className='alternative-image-container'>
+                    {[
+                      { _id: product._id, url: product.image },
+                      ...product.alternativeImages,
+                    ].map((image) => (
+                      <Image
+                        src={image.url}
+                        alt={image.url}
+                        fluid
+                        className='alternative-image'
+                        onClick={setMainPicHandler}
+                        key={image._id}
+                      />
+                    ))}
+                  </div>
+                )}
             </Col>
             <Col md={3}>
               <ListGroup variant='flush'>
